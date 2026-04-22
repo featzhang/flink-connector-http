@@ -349,11 +349,19 @@ To create a custom format user has to implement Flink's `SerializationSchema` an
 
 ### Http headers
 It is possible to set custom HTTP headers that will be added to every HTTP request sent by the lookup source connector.
+
+> **Recommended Approach:** As of [FLINK-39365], custom HTTP headers are formally supported as `ConfigOption` declarations (`http.source.lookup.header.*`).
+> This is the **recommended way** to configure headers, as it provides:
+> - Automatic validation by Flink's table option validator
+> - IDE autocomplete support
+> - Better documentation and discoverability
+> - Consistent with other Flink connector configuration patterns
+
 Headers are specified as individual properties using the prefix `http.source.lookup.header.`, followed by the header name.
 For example: `'http.source.lookup.header.Content-Type' = 'application/json'`.
 
-> **Note:** As of [FLINK-HTTP-3], custom HTTP headers are formally supported as a `ConfigOption` (`http.source.lookup.header.*`),
-> enabling proper validation and discoverability of header configuration.
+All headers configured via the `http.source.lookup.header.*` prefix are processed identically — there is no precedence or conflict resolution.
+Simply declare each header as a separate property in your table DDL, and they will all be included in every lookup request.
 
 Headers can be set using the HTTP lookup source table DDL. In the example below, every HTTP request for the `http-lookup` table will contain three headers:
 - `Origin`
@@ -481,10 +489,18 @@ another format name.
 
 ### Sink Http headers
 It is possible to set custom HTTP headers that will be added to every HTTP request sent by the HTTP sink connector.
+
+> **Recommended Approach:** As of [FLINK-39365], custom HTTP headers are formally supported as `ConfigOption` declarations (`http.sink.header.*`).
+> This is the **recommended way** to configure headers, as it provides:
+> - Automatic validation by Flink's table option validator
+> - IDE autocomplete support
+> - Better documentation and discoverability
+> - Consistent with other Flink connector configuration patterns
+
 Headers are specified as individual properties using the prefix `http.sink.header.`, followed by the header name.
 
-> **Note:** As of [FLINK-HTTP-3], custom HTTP headers are formally supported as a `ConfigOption` (`http.sink.header.*`),
-> enabling proper validation and discoverability of header configuration.
+All headers configured via the `http.sink.header.*` prefix are processed identically — there is no precedence or conflict resolution.
+Simply declare each header as a separate property in your table DDL, and they will all be included in every sink request.
 
 Headers can be set using the HTTP sink table DDL:
 
